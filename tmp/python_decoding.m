@@ -1,3 +1,5 @@
+
+
 load("C:\Users\ktmks\Documents\research\Python\Brain_DL\res_AtomN-1000_SparseDegree-10_MaxIter-30.mat")
 
 L=label(label==3|label==4);

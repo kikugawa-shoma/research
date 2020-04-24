@@ -1,6 +1,7 @@
 cd ../Python/BrainDL
 fileinfos=dir("res*.mat")
 file_num=size(filesinfos,1)
+cd ../../tmp_results/
 iter=10
 acc=zeros(file_num,iter)
 for i=1:file_num
@@ -22,3 +23,4 @@ for i=1:file_num
         pred=predict(model,data_test);
         acc(i,j)=(sum(pred==label_test)/size(pred,1))*100
 
+save("python_decoding_results.mat","fileinfos","acc")

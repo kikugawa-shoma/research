@@ -9,7 +9,7 @@ for i=1:file_num
 
     load(fileinfos(i).name)
     YY=(D'*X')';
-    X=YY
+    X=YY;
     for j=1:iter
         L=label(label==3|label==4);
         data=X(label==3|label==4,:);

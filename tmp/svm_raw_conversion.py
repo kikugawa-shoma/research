@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.metrics import accuracy_score
 
-filepath = r"C:\Users\Owner\ishii_lab\input_data\brain_f_data.mat"
+filepath = r"C:\Users\ktmks\Documents\research\tmp_results\for_python_data\brain_f_data.mat"
 data = scipy.io.loadmat(filepath)
 y = data["label"]
 x = data["data"]

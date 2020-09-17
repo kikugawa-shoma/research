@@ -10,16 +10,24 @@ import matplotlib.pyplot as plt
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 data_root = "C:\\Users\\ktmks\\Documents\\my_sources\\20\\"
 
-T = [[0]*2 for _ in range(len(subj_list))]
+T = []
+f = open(r"C:\Users\ktmks\Documents\research\tmp\results\feature_values.txt",mode="r")
+tmp = f.read().split("\n")
+for i in range(len(subj_list)):
+    T.append(list(map(float,tmp[i].split())))
+f.close()
 
-for i,subj in enumerate(subj_list):
-    id = "{:0>3}".format(subj)
-    subj_data_path = data_root + id + "\\rest\\inter_feature.mat"
-    T[i] = scipy.io.loadmat(subj_data_path)["x"][0][:]
 
-"""
+
 T = np.array(T)
 label = KMeans(n_clusters=2).fit_predict(T)
+
+save_path = "C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\classified_label.txt"
+with open(save_path,"w") as f:
+    for i in range(len(subj_list)):
+        print(label[i],file=f,end=" ")
+
+"""
 plt.scatter(T[:,0],T[:,1],c=label)
 plt.show()
 """

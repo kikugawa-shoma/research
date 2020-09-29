@@ -74,7 +74,6 @@ class Connectivity():
         for i in range(len(self.G.nodes)):
             pr[i] = dict_pagerank[i+1]
         return pr
-            
 
 if __name__ == "__main__":
     subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
@@ -92,9 +91,3 @@ if __name__ == "__main__":
             for j in range(len(pageranks[0])):
                 f.write(str(pageranks[i][j])+" ")
             f.write("\n")
-
-    
-
-
-
-

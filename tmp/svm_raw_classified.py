@@ -22,7 +22,6 @@ subjects = []
 subject_N = 51
 
 accuracy_test = [0]*subject_N
-model = SVC(kernel="linear")
 
 labeled_x = defaultdict(lambda :[])
 labeled_y = defaultdict(lambda :[])
@@ -44,6 +43,7 @@ for i in range(subject_N):
     test_index = [label_cnt[Li]*80+k for k in range(80)]
     train_index = list(set([k for k in range(len(labeled_x[Li]))]) - set(test_index))
     x_train,y_train,x_test,y_test = labeled_x[Li][train_index],labeled_y[Li][train_index],labeled_x[Li][test_index],labeled_y[Li][test_index]
+    model = SVC(kernel="linear")
     model.fit(x_train,y_train)
     pred_test = model.predict(x_test)
     accuracy_test[i] = accuracy_score(y_test,pred_test)

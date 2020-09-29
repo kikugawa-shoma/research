@@ -26,7 +26,7 @@ class PageRanks():
         D = np.array([[0]*self.N for _ in range(self.N)],dtype="float32")
         for i in range(self.N):
             for j in range(self.N):
-                D[i][j] = np.linalg.norm(self.pr[i]-self.pr[j])
+                D[i][j] = np.dot(self.pr[i],self.pr[j])/(np.linalg.norm(self.pr[i])*np.linalg.norm(self.pr[j]))
         return D
 
 class NearestsDecoder(SVC):

@@ -17,8 +17,8 @@ class P_Value():
         the number of rois or nodes
     """
 
-    def __init__(self,subj):
-        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con.mat","r")
+    def __init__(self,subj,e_num=3):
+        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con_e_num"+str(e_num)+".mat","r")
         self.p = np.array(f["Ps"][:][:])
         self.N = len(self.p)
     
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
     pageranks = []
     for cnt,subj in enumerate(subj_list):
-        p_value = P_Value(subj)
+        p_value = P_Value(subj,e_num = 5)
         conn = p_value.create_network()
         pageranks.append(conn.pagerank())
     pageranks = np.array(pageranks)

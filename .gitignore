@@ -5,3 +5,5 @@
 /.vscode
 *.mat
 *.txt
+*.npy
+*.yml

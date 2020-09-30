@@ -78,7 +78,7 @@ if __name__ == "__main__":
             pred_test = model.nearests_predict(x_test)
             accuracy_test[j][i] = accuracy_score(y_test,pred_test)
             print(i," : ",accuracy_test[j][i])
-    np.save("results/svm_raw_nearests_decoding",accuracy_test)
+    np.save("results/svm_raw_nearests_decoding_enum5",accuracy_test)
 
     
 

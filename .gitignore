@@ -3,3 +3,7 @@
 /input_data
 /ResearchProgressReports
 /.vscode
+*.mat
+*.txt
+*.npy
+*.yml

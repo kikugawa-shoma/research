@@ -71,7 +71,7 @@ if __name__ == "__main__":
     x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
     y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-    thleasholds = [0.040+i*0.001 for i in range(2)]
+    thleasholds = [0.88+i*0.01 for i in range(2)]
     accuracy_test = [[0]*subject_N for _ in range(len(thleasholds))]
 
     for j,tl in enumerate(thleasholds):

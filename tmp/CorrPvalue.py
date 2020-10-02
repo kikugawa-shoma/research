@@ -58,7 +58,7 @@ class P_Value():
     
 class R_value():
     def __init__(self):
-        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con.mat","r")
+        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con_e_num5.mat","r")
         self.r = f["Rs"].value
     
     def create_network(self):

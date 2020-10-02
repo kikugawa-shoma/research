@@ -34,22 +34,26 @@ class NearestsDecoder(SVC):
         super().__init__(kernel=kernel)
         self.X = X
         self.Y = Y
-        self.T = T
-        self.N = T.shape
+        self.T = T #pagerank
+        self.N = T.shape[0]
     
-    def nearest_fit(self,subj_ind,train_num=10):
+    def thleashold_fit(self,subj_ind,thleashold):
         T_argsort = self.T[subj_ind].argsort()
-        train_subj = T_argsort[1:train_num]
+        train_subjs=[]
+        for i in range(1,self.N):
+            if self.T[subj_ind][T_argsort[i]] < thleashold:
+                train_subjs.append(T_argsort[i])
+
         inds = []
-        for i in range(train_num-1):
-            ind = train_subj[i]
+        for i in range(len(train_subjs)):
+            ind = train_subjs[i]
             inds.extend([ind*80+j for j in range(80)])
             
         x_train = self.X[inds]
         y_train = self.Y[inds]
         super().fit(x_train,y_train)
     
-    def nearests_predict(self,x_test):
+    def predict(self,x_test):
         return super().predict(x_test)
 
 if __name__ == "__main__":
@@ -66,16 +70,16 @@ if __name__ == "__main__":
     x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
     y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-    train_num_list = [5*i for i in range(1,11)]
-    accuracy_test = [[0]*subject_N for _ in range(len(train_num_list))]
+    thleasholds = [0.040+i*0.001 for i in range(2)]
+    accuracy_test = [[0]*subject_N for _ in range(len(thleasholds))]
 
-    for j,train_num in enumerate(train_num_list):
+    for j,tl in enumerate(thleasholds):
         for i in range(subject_N):
             model = NearestsDecoder(x,y,D,kernel="linear")
-            model.nearest_fit(subj_ind=i,train_num=train_num)
+            model.thleashold_fit(subj_ind=i,thleashold=tl)
             x_test = x[80*i:80*(i+1),:]
             y_test = y[80*i:80*(i+1)]
-            pred_test = model.nearests_predict(x_test)
+            pred_test = model.predict(x_test)
             accuracy_test[j][i] = accuracy_score(y_test,pred_test)
             print(i," : ",accuracy_test[j][i])
     np.save("results/svm_raw_nearests_decoding_enum5",accuracy_test)

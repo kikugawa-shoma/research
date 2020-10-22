@@ -66,7 +66,7 @@ if __name__ == "__main__":
     x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
     y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-    train_num_list = [5*i for i in range(1,11)]
+    train_num_list = [48,49,50]
     accuracy_test = [[0]*subject_N for _ in range(len(train_num_list))]
 
     for j,train_num in enumerate(train_num_list):

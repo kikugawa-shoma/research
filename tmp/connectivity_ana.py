@@ -23,7 +23,7 @@ for i in range(pagerank.N):
 
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
-plt.hist(ps,bins=15)
+plt.hist(ps,bins=8)
 plt.show()
 
 

@@ -39,7 +39,7 @@ class NearestsDecoder(SVC):
     
     def nearest_fit(self,subj_ind,train_num=10):
         T_argsort = self.T[subj_ind].argsort()
-        train_subj = T_argsort[1:train_num]
+        train_subj = T_argsort[1:train_num+1]
         inds = []
         for i in range(train_num-1):
             ind = train_subj[i]
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
     y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-    train_num_list = [48,49,50]
+    train_num_list = [47,48,49,50]
     accuracy_test = [[0]*subject_N for _ in range(len(train_num_list))]
 
     for j,train_num in enumerate(train_num_list):

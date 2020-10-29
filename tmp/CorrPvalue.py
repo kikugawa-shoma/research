@@ -18,8 +18,9 @@ class P_Value():
     """
 
     def __init__(self,subj):
-        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con.mat","r")
+        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con_roi_brodmann_all_e_num5.mat","r")
         self.p = np.array(f["Ps"][:][:])
+        self.r = np.array(f["Rs"][:][:])
         self.N = len(self.p)
     
     #P値の行列から閾値で0/1の隣接行列を作る
@@ -56,14 +57,6 @@ class P_Value():
         G.add_edges_from(edges)
         return Connectivity(G)
     
-class R_value():
-    def __init__(self):
-        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con.mat","r")
-        self.r = f["Rs"].value
-    
-    def create_network(self):
-        pass
-
 class Connectivity():
     def __init__(self,nxgraph):
         self.G = nxgraph

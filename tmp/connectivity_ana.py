@@ -18,7 +18,6 @@ def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
     a     : データの下限値
     b     : データの上限値
 
-
     returns
     --------------
     p_value : 一様分布との適合度検定のp値
@@ -72,7 +71,7 @@ plt.hist(rand_label_ps,bins=15)
 plt.show()
 
 #χ二乗分布による適合度検定
-p = chi_squared_test(ps)
+p = chi_squared_test(ps,bin_n=15)
 p_rand = chi_squared_test(rand_label_ps)
 
 

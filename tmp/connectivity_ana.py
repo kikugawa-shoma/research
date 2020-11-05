@@ -6,6 +6,38 @@ import numpy as np
 from scipy import stats
 from collections import defaultdict
 
+#一様分布との適合度検定を行う関数
+def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
+    """
+    一様分布を帰無仮説とした適合度検定を行う関数
+
+    parameters
+    --------------
+    xs    : list[データの総数,1]
+    bin_n : binの個数
+    a     : データの下限値
+    b     : データの上限値
+
+
+    returns
+    --------------
+    p_value : 一様分布との適合度検定のp値
+    """
+    hist = [0]*bin_n
+    N = len(xs)
+    ab = b-a
+    d = ab*(1/bin_n)
+    for x in xs:
+        for k in range(bin_n):
+            if a+d*k <= x < a+d*(k+1):
+                hist[k]+=1
+    chi2_0 = 0
+    ei = N/bin_n
+    for k in range(bin_n):
+        chi2_0 += ((hist[k]-ei)**2)/ei
+    p_value = stats.chi2.sf(x = chi2_0,df = bin_n-1)
+    return p_value
+
 #データの前準備
 class_label_path = r"C:\Users\ktmks\Documents\research\tmp\results\confusion_mat_classified_label.txt"
 with open(class_label_path,mode="r") as f:
@@ -23,7 +55,7 @@ for i in range(pagerank.N):
 
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
-plt.hist(ps,bins=8)
+plt.hist(ps,bins=10)
 plt.show()
 
 
@@ -39,7 +71,9 @@ rand_label_ts,rand_label_ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 plt.hist(rand_label_ps,bins=15)
 plt.show()
 
-
+#χ二乗分布による適合度検定
+p = chi_squared_test(ps)
+p_rand = chi_squared_test(rand_label_ps)
 
 
 """

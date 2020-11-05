@@ -28,9 +28,6 @@ class Dmap_r(CP.P_Value):
         plt.show()
                     
 
-    
-
-
 for subj in [2]:
     dmap_r = Dmap_r(subj)
     dmapmodel = DiffusionMapEmbedding(alpha=0.5,

@@ -55,6 +55,7 @@ for i in range(pagerank.N):
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
 plt.hist(ps,bins=10)
+plt.plot([0,1],[len(ps)/10,len(ps)/10],"k","-")
 plt.show()
 
 

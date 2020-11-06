@@ -28,13 +28,18 @@ class Dmap_r(CP.P_Value):
         plt.show()
                     
 
-for subj in [2]:
+des = []
+for subj in subj_list:
+    if subj == 32:
+        continue # because subject 32 data contain NaN
     dmap_r = Dmap_r(subj)
     dmapmodel = DiffusionMapEmbedding(alpha=0.5,
                                  diffusion_time = 10,
                                  affinity="nearest_neighbors",
-                                 n_components=10)
+                                 n_components=5)
     de = dmapmodel.fit_transform(dmap_r.r)
+    des.append(de)
+np.save(r"results\dmap_feature.npy",des)
     #dmapmodel.fit_transform(copy.deepcopy(pr.r))
 
     

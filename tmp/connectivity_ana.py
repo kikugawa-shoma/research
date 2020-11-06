@@ -6,6 +6,12 @@ import numpy as np
 from scipy import stats
 from collections import defaultdict
 
+"""
+1 : conversion matrixから得られたラベルでグループ分けされた被験者群間の各サーチライトに対してpagerankのt検定を行い、
+    その結果をヒストグラムに表示
+2 : 1の結果のヒストグラムに対して帰無仮説を一様分布とした適合度検定を行う
+"""
+
 #一様分布との適合度検定を行う関数
 def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
     """

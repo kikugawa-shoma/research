@@ -61,7 +61,7 @@ for i in range(pagerank.N):
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
 plt.hist(ps,bins=10)
-plt.plot([0,1],[len(ps)/10,len(ps)/10],"k","-")
+plt.plot([0,1],[len(ps)/10,len(ps)/10],linestyle="dashed",color="black")
 plt.show()
 
 
@@ -74,12 +74,14 @@ for i in range(pagerank.N):
 
 rand_label_ts,rand_label_ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
-plt.hist(rand_label_ps,bins=15)
+plt.hist(rand_label_ps,bins=10)
+plt.plot([0,1],[len(ps)/10,len(ps)/10],linestyle="dashed",color="black")
 plt.show()
 
 #χ二乗分布による適合度検定
-p = chi_squared_test(ps,bin_n=15)
+p = chi_squared_test(ps,bin_n=10)
 p_rand = chi_squared_test(rand_label_ps)
+print("confusion_mat classified : {}\nrandom classified : {}".format(p,p_rand))
 
 
 """

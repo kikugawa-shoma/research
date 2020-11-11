@@ -7,6 +7,7 @@ from collections import defaultdict
 
 f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\confusion_mat_classified_label.txt")
 L = list(map(int,f.readline().split()))
+f.close()
 L_unique = list(set(L))
 
 filepath = r"C:\Users\ktmks\Documents\research\tmp_results\for_python_data\brain_f_data.mat"

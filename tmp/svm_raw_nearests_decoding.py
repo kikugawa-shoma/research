@@ -52,6 +52,19 @@ class NearestsDecoder(SVC):
     def nearests_predict(self,x_test):
         return super().predict(x_test)
 
+class SelectiveDecoder(SVC):
+    def __init__(self,X,Y,T,kernel="linear"):
+        super().__init__(kernel="linear")
+        self.X = X
+        self.Y = Y
+        self.T = T
+        with open(r"results\confusion_mat_classified_label.txt") as f:
+            self.C = list(map(int,f.readline().split()))
+    def selective_fit(self,subj_ind):
+        pass
+
+
+
 if __name__ == "__main__":
     subject_N = 51
 
@@ -69,9 +82,13 @@ if __name__ == "__main__":
     train_num_list = [5*i for i in range(1,11)]
     accuracy_test = [[0]*subject_N for _ in range(len(train_num_list))]
 
+    model = SelectiveDecoder(x,y,prs.pr,kernel="linear")
+
+    """
+
     for j,train_num in enumerate(train_num_list):
         for i in range(subject_N):
-            model = NearestsDecoder(x,y,D,kernel="linear")
+            model = SelectiveDecoder(x,y,D,kernel="linear")
             model.nearest_fit(subj_ind=i,train_num=train_num)
             x_test = x[80*i:80*(i+1),:]
             y_test = y[80*i:80*(i+1)]
@@ -79,6 +96,7 @@ if __name__ == "__main__":
             accuracy_test[j][i] = accuracy_score(y_test,pred_test)
             print(i," : ",accuracy_test[j][i])
     np.save("results/svm_raw_nearests_decoding_enum5",accuracy_test)
+    """
 
     
 

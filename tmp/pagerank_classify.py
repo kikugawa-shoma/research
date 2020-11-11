@@ -1,0 +1,32 @@
+from sklearn.svm import SVC
+import numpy as np
+from svm_raw_nearests_decoding import PageRanks as PR
+from collections import defaultdict
+
+class PagerankDecoder(SVC):
+    def __init__(self,kernel="rbf"):
+        super().__init__(kernel=kernel,verbose=True)
+    def fit_predict(self,X,Y,test_ind):
+        X = np.array(X)
+        Y = np.array(Y)
+        self.N = len(Y)
+        train_ind = [True]*self.N
+        train_ind[test_ind] = False
+        self.train_x = X[train_ind,:]
+        self.train_y = Y[train_ind]
+        self.test_x = X[test_ind,:]
+        self.test_y = Y[test_ind]
+        super().fit(self.train_x,self.train_y)
+        return int(super().predict(self.test_x.reshape(1,-1)))
+
+if __name__ == "__main__":
+    with open(r"results\confusion_mat_classified_label.txt") as f:
+        label = list(map(int,f.readline().split()))
+    predicted_label = []
+    for i in [0]:
+        model = PagerankDecoder()
+        predicted_label.append(model.fit_predict(PR().pr,label,i))
+    print(predicted_label)
+    
+
+

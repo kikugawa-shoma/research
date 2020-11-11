@@ -6,7 +6,7 @@ import copy
 
 class PagerankDecoder(SVC):
     def __init__(self,kernel="rbf"):
-        super().__init__(kernel=kernel,verbose=True)
+        super().__init__(kernel=kernel)
     def fit_predict(self,X,Y,test_ind):
         X = np.array(X)
         Y = np.array(Y)
@@ -45,20 +45,25 @@ def t_test_classifier(pagerank,label,test_ind):
 if __name__ == "__main__":
     with open(r"results\confusion_mat_classified_label.txt") as f:
         label = list(map(int,f.readline().split()))
-    """
+    
+    ps = np.load(r"results\pagerank_p-value.npy")
+    sig_ps = ps<0.05
     predicted_label = []
-    for i in [0]:
+    for i in range(len(label)):
         model = PagerankDecoder()
-        predicted_label.append(model.fit_predict(PR().pr,label,i))
-    print(predicted_label)
-    """
+        predicted_label.append(model.fit_predict(PR().pr[:,sig_ps],label,i))
+    predicted_label = np.array(predicted_label)
+    label = np.array(label)
+    print(sum(label == predicted_label)/51)
 
+    """
     predicted_label = []
     for i in range(len(label)):
         predicted_label.append(t_test_classifier(PR().pr,label,i))
     label = np.array(label)
     predicted_label = np.array(predicted_label)
     print(sum(label == predicted_label)/51)
+    """
     
     
 

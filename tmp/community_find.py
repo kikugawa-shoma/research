@@ -66,10 +66,12 @@ class confusion_mat():
 
     def community_detection_without(self,subj):
         """
-        self.Gからcommunity detectionによりグラフクラスタリングを実行する関数
+        subjを孤立ノードとしたうえでself.Gからcommunity detectionにより
+        グラフクラスタリングを実行する関数
 
         Parameters
         ----------
+        subj : 孤立ノードとする被験者のindex
 
         Returns
         ----------

@@ -8,49 +8,89 @@ import scipy.io
 import numpy as np
 import matplotlib.pyplot as plt
 from networkx.algorithms import community 
+import copy
 
-G = scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\confusion_mat.mat")["confusion_mat"]
-G = G > 60
+class confusion_mat():
+    """
+    one training one testでのaccuracyを並べたconfusion matrixから
+    隣接行列をthleasholdで0/1に変換することにより計算するためのクラス
 
-plt.imshow(G)
-#plt.show()
+    Parameters
+    -----------
+    thleashold : 
 
-nodes = [i+1 for i in range(len(G))]  # 1-indexedに変えている(matlabでの図示と合わせるため)
-edges = []
-for i in range(1,len(G)+1):
-    for j in range(1,i):
-        if G[i-1,j-1]:  # 1-indexedに変えている(matlabでの図示と合わせるため)
-            edges.append([i,j])
+    Attributes
+    -----------
+    accuracy_mat : 
+    adj_mat      : 
+    N            : 
 
-G = nx.Graph()
-G.add_nodes_from(nodes)
-G.add_edges_from(edges)
+    """
+    def __init__(self,thleashold = 60):
+        self.accuracy_mat = scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\confusion_mat.mat")["confusion_mat"]
+        self.adj_mat = self.accuracy_mat > thleashold
+        self.N = len(self.adj_mat)
+    
+    def make_graph_without(self,subj):
+        """
+        subjを孤立ノードとしたグラフを構築しattributeのself.Gへ追加する関数
 
-"""
-被験者のグラフの描画
-pos = nx.spring_layout(G)
-nx.draw_networkx(G, pos, with_labels=True)
-plt.axis("off")
-plt.show()
-"""
+        Parameters
+        ----------
+        subj : 取り除くべきsubjectのindex(target subject)
 
 
-C = community.greedy_modularity_communities(G,2)  #グラフクラスタリング
-C = list(C)
-C = list(map(sorted,C))
-print(list(map(sorted,C)))
+        """
+        subtracted_G = copy.deepcopy(self.adj_mat)
+        for i in range(self.N):
+            subtracted_G[subj][i] = 0
+            subtracted_G[i][subj] = 0
+        self.nodes = [i for i in range(self.N)] 
+        self.edges = []
+        for i in range(self.N):
+            for j in range(i):
+                if subtracted_G[i,j]:  
+                    self.edges.append([i,j])
 
-label_n = len(C)
-label = [0]*len(nodes)
-for i in range(label_n):
-    subject_N_in_label = len(C[i])
-    for j in range(subject_N_in_label):
-        label[C[i][j]-1] = i
+        self.G = nx.Graph()
+        self.G.add_nodes_from(self.nodes)
+        self.G.add_edges_from(self.edges)
 
-"""
-グラフクラスタリングによるラベルを保存
-f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\confusion_mat_classified_label.txt","w")
-for i in range(len(nodes)):
-    print(label[i],file=f,end=" ")
-f.close()
-"""
+        """
+        描画(デバッグ用)
+        pos = nx.spring_layout(self.G)
+        nx.draw_networkx(self.G, pos, with_labels=True)
+        plt.axis("off")
+        plt.show()
+        """
+
+    def community_detection_without(self,subj):
+        """
+        self.Gからcommunity detectionによりグラフクラスタリングを実行する関数
+
+        Parameters
+        ----------
+
+        Returns
+        ----------
+        label : list, [1,self.N]
+        """
+        self.make_graph_without(subj)
+        C = community.greedy_modularity_communities(self.G,2)  #グラフクラスタリング
+        C = list(C)
+        C = list(map(sorted,C))
+
+        label_n = len(C)
+        label = [0]*len(self.nodes)
+        for i in range(label_n):
+            subject_N_in_label = len(C[i])
+            for j in range(subject_N_in_label):
+                label[C[i][j]] = i
+        label[subj] = None
+        return label
+
+if __name__ == "__main__":
+    for i in range(51):
+        A = confusion_mat()
+        print(i+1,A.community_detection_without(i))
+

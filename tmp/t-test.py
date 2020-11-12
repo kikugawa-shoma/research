@@ -7,8 +7,7 @@ x = []
 root = "C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\"
 filenames = [
     "svm_raw",
-    "svm_raw_confusion_mat_classified",
-    "svm_raw_classified",
+    "svm_raw_pagerank_classified",
     ]
 
 for i in range(len(filenames)):
@@ -23,11 +22,8 @@ colorlist = ["r", "g", "b", "c", "m", "y", "k"]
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-"""
 for i in range(len(x[0])):
     ax.plot([0,1],[x[0][i],x[1][i]],color=colorlist[i%7])
-    ax.plot([1,2],[x[1][i],x[2][i]],color=colorlist[i%7])
-"""
 
 bar_y = []
 err = []
@@ -35,7 +31,7 @@ err = []
 for i in range(len(filenames)):
     bar_y.append(mean(x[i]))
     err.append(stdev(x[i]))
-ax.bar([0,1,2],bar_y,width=0.6,yerr=err,capsize=10)
+ax.bar([0,1],bar_y,width=0.6,yerr=err,capsize=10)
 ax.set_ylim([0.3,1])
 
 plt.show()

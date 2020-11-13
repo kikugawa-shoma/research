@@ -15,13 +15,14 @@ class PagerankDecoder(SVC):
         train_ind = [True if c != None else False for c in Y]
         train_x = X[train_ind,:]
         train_y = np.array(Y[train_ind],dtype=int)
+        print(train_y)
         super().fit(train_x,train_y)
     def predict(self,x):
         return super().predict(x)
 
 
 if __name__ == "__main__":
-    for target in range(51):
+    for target in range(1):
         label = cf.ConfusionMatrix().community_detection_without(target)
         pagerank = PR.PageRanks()
         

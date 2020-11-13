@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from networkx.algorithms import community 
 import copy
 
-class confusion_mat():
+class ConfusionMatrix():
     """
     one training one testでのaccuracyを並べたconfusion matrixから
     隣接行列をthleasholdで0/1に変換することにより計算するためのクラス
@@ -93,16 +93,15 @@ class confusion_mat():
         C = list(C)
         C = list(map(sorted,C))
 
-        label = [False]*self.N
+        label = [None]*self.N
         for ind_c in range(len(C)):
             for node in C[ind_c]:
                 label[node] = ind_c
-        label[subj] = None
 
         return label
 
 if __name__ == "__main__":
     for i in range(51):
-        A = confusion_mat()
-        print(i+1,A.community_detection_without(i))
+        A = ConfusionMatrix()
+        print(i,A.community_detection_without(i))
 

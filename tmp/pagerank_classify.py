@@ -3,10 +3,12 @@ import numpy as np
 from svm_raw_nearests_decoding import PageRanks as PR
 from collections import defaultdict
 import copy
+import community_find as cf
 
 class PagerankDecoder(SVC):
-    def __init__(self,kernel="rbf"):
+    def __init__(self,target,kernel="rbf"):
         super().__init__(kernel=kernel)
+        self.target = target
     def fit_predict(self,X,Y,test_ind):
         X = np.array(X)
         Y = np.array(Y)
@@ -30,7 +32,6 @@ if __name__ == "__main__":
     sig_ps = ps<0.05
     predicted_label = []
     for i in range(len(label)):
-        model = PagerankDecoder()
         predicted_label.append(model.fit_predict(PR().pr[:,sig_ps],label,i))
     predicted_label = np.array(predicted_label)
     label = np.array(label)

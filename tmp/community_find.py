@@ -27,13 +27,17 @@ class confusion_mat():
 
     """
     def __init__(self,thleashold = 60):
+        # confusion matrixをロード
         self.accuracy_mat = scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\confusion_mat.mat")["confusion_mat"]
+
+        # thleacholdで0/1の隣接行列を作成
         self.adj_mat = self.accuracy_mat > thleashold
+
         self.N = len(self.adj_mat)
     
     def make_graph_without(self,subj):
         """
-        subjを孤立ノードとしたグラフを構築しattributeのself.Gへ追加する関数
+        subjノードと孤立ノードを削除したグラフを構築しattributeのself.Gへ追加する関数
 
         Parameters
         ----------
@@ -41,20 +45,24 @@ class confusion_mat():
 
 
         """
-        subtracted_G = copy.deepcopy(self.adj_mat)
-        for i in range(self.N):
-            subtracted_G[subj][i] = 0
-            subtracted_G[i][subj] = 0
+        # グラフの構築
         self.nodes = [i for i in range(self.N)] 
         self.edges = []
         for i in range(self.N):
             for j in range(i):
-                if subtracted_G[i,j]:  
+                if self.adj_mat[i,j]:  
                     self.edges.append([i,j])
-
         self.G = nx.Graph()
         self.G.add_nodes_from(self.nodes)
         self.G.add_edges_from(self.edges)
+
+        # subjノードを削除
+        self.G.remove_node(subj)
+
+        # 孤立ノードを削除
+        isolated = [k for k,v in self.G.degree() if v == 0]
+        for iso_node in isolated:
+            self.G.remove_node(iso_node)
 
         """
         描画(デバッグ用)
@@ -66,7 +74,7 @@ class confusion_mat():
 
     def community_detection_without(self,subj):
         """
-        subjを孤立ノードとしたうえでself.Gからcommunity detectionにより
+        subjノードと孤立ノードを取り除いたうえでself.Gからcommunity detectionにより
         グラフクラスタリングを実行する関数
 
         Parameters
@@ -77,18 +85,20 @@ class confusion_mat():
         ----------
         label : list, [1,self.N]
         """
+
         self.make_graph_without(subj)
-        C = community.greedy_modularity_communities(self.G,2)  #グラフクラスタリング
+
+        # グラフクラスタリング
+        C = community.asyn_fluidc(self.G,k=2,seed=3)
         C = list(C)
         C = list(map(sorted,C))
 
-        label_n = len(C)
-        label = [0]*len(self.nodes)
-        for i in range(label_n):
-            subject_N_in_label = len(C[i])
-            for j in range(subject_N_in_label):
-                label[C[i][j]] = i
+        label = [False]*self.N
+        for ind_c in range(len(C)):
+            for node in C[ind_c]:
+                label[node] = ind_c
         label[subj] = None
+
         return label
 
 if __name__ == "__main__":

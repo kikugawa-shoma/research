@@ -28,8 +28,8 @@ if __name__ == "__main__":
         sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target)
 
         model = PagerankDecoder()
-        model.fit(pagerank.pr,label)
-        print(target,model.predict(pagerank.pr[target].reshape(1,-1)))
+        model.fit(pagerank.pr[:,sig_ps_ind],label)
+        print(target,model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1)))
 
     """
     predicted_label = []

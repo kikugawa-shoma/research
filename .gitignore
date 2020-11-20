@@ -7,3 +7,4 @@
 *.txt
 *.yml
 *.npy
+tmp/__pycache__

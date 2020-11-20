@@ -1,3 +1,5 @@
+import  matplotlib.pyplot as plt
+
 """
 confusion matrix からaccuracy 60%以上を結合していると考えたグラフを計算し、そのグラフの
 グラフクラスタリングを行うスクリプト
@@ -89,7 +91,7 @@ class ConfusionMatrix():
         self.make_graph_without(subj)
 
         # グラフクラスタリング
-        C = community.asyn_fluidc(self.G,k=2,seed=3)
+        C = community.greedy_modularity_communities(self.G)
         C = list(C)
         C = list(map(sorted,C))
 
@@ -97,11 +99,27 @@ class ConfusionMatrix():
         for ind_c in range(len(C)):
             for node in C[ind_c]:
                 label[node] = ind_c
+        
+        """%1
+        描画のためにNoneを取り除く
+        label[label.index(None)] = 3
+        if None in label:
+            label[label.index(None)] = 3
+        """
 
         return label
 
 if __name__ == "__main__":
+
+    tmp = []
     for i in range(51):
         A = ConfusionMatrix()
         print(i,A.community_detection_without(i))
+        tmp.append(A.community_detection_without(i))
+
+    """%1
+    plt.imshow(tmp)
+    plt.show()
+    """
+
 

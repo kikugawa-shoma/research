@@ -3,6 +3,7 @@ import numpy as np
 from svm_raw_nearests_decoding import PageRanks as PR
 from collections import defaultdict
 import copy
+import random
 
 class PagerankDecoder(SVC):
     def __init__(self,kernel="rbf"):
@@ -28,6 +29,14 @@ if __name__ == "__main__":
     ps = np.load(r"results\pagerank_p-value.npy")
     sig_ps = ps<0.05
     predicted_label = []
+
+
+    for i in range(len(ps)):
+        r = random.uniform(0,10)
+        if r<0.3:
+            sig_ps[i] = True
+    print(sum(sig_ps))
+
     for i in range(len(label)):
         model = PagerankDecoder()
         predicted_label.append(model.fit_predict(PR().pr[:,sig_ps],label,i))

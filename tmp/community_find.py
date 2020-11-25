@@ -99,12 +99,6 @@ class ConfusionMatrix():
         for ind_c in range(len(C)):
             for node in C[ind_c]:
                 label[node] = ind_c
-        """
-        label[label.index(None)] = 3
-        if None in label:
-            label[label.index(None)] = 3
-
-        """
 
         return label
 
@@ -115,8 +109,12 @@ if __name__ == "__main__":
         A = ConfusionMatrix()
         print(i,A.community_detection_without(i))
         tmp.append(A.community_detection_without(i))
-
-    """
+    
+    """各target subject時のクラス分類の描画
+    for i in range(len(tmp)):
+        for j in range(len(tmp[0])):
+            if tmp[i][j] == None:
+                tmp[i][j] = -1
     plt.imshow(tmp)
     plt.show()
     """

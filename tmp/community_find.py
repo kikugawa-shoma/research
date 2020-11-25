@@ -99,12 +99,11 @@ class ConfusionMatrix():
         for ind_c in range(len(C)):
             for node in C[ind_c]:
                 label[node] = ind_c
-        
-        """%1
-        描画のためにNoneを取り除く
+        """
         label[label.index(None)] = 3
         if None in label:
             label[label.index(None)] = 3
+
         """
 
         return label
@@ -117,7 +116,7 @@ if __name__ == "__main__":
         print(i,A.community_detection_without(i))
         tmp.append(A.community_detection_without(i))
 
-    """%1
+    """
     plt.imshow(tmp)
     plt.show()
     """

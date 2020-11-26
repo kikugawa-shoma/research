@@ -110,13 +110,12 @@ if __name__ == "__main__":
         print(i,A.community_detection_without(i))
         tmp.append(A.community_detection_without(i))
     
-    """各target subject時のクラス分類の描画
-    for i in range(len(tmp)):
-        for j in range(len(tmp[0])):
-            if tmp[i][j] == None:
-                tmp[i][j] = -1
-    plt.imshow(tmp)
-    plt.show()
-    """
+    if True:
+        for i in range(len(tmp)):
+            for j in range(len(tmp[0])):
+                if tmp[i][j] == None:
+                    tmp[i][j] = -1
+        plt.imshow(tmp)
+        plt.show()
 
 

@@ -34,13 +34,14 @@ if __name__ == "__main__":
 
         pagerank = PR.PageRanks()
         
-        sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target)
+        sig_ps_ind1 = PR.PageRanks().ttest_significant_ind(target = target)
+        sig_ps_ind = np.load(r"results\e_num5\sig_ps.npy")
 
         model = PagerankDecoder()
         model.fit(pagerank.pr[:,sig_ps_ind],label)
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
         print(target,all_label[target],pred)
-        if label[target] == pred[0]:
+        if all_label[target] == pred[0]:
             accuracy += 1
     accuracy = accuracy/51
     print(accuracy)

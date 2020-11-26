@@ -23,25 +23,18 @@ class PagerankDecoder(SVC):
 if __name__ == "__main__":
     accuracy = 0
     for target in range(51):
-        #label = cf.ConfusionMatrix().community_detection_without(target)
-
-        # This is the comment option
-        with open(r"results\confusion_mat_classified_label.txt") as f:
-            all_label = list(map(int,f.readline().split()))
-        
-        label = copy.copy(all_label)
-        label[target] = None
+        label = cf.ConfusionMatrix().community_detection_without(target)
+        print(label)
 
         pagerank = PR.PageRanks()
         
-        sig_ps_ind1 = PR.PageRanks().ttest_significant_ind(target = target)
-        sig_ps_ind = np.load(r"results\e_num5\sig_ps.npy")
+        sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target)
 
         model = PagerankDecoder()
         model.fit(pagerank.pr[:,sig_ps_ind],label)
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
-        print(target,all_label[target],pred)
-        if all_label[target] == pred[0]:
+        print(target,label[target],pred)
+        if label[target] == pred[0]:
             accuracy += 1
     accuracy = accuracy/51
     print(accuracy)

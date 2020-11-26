@@ -28,6 +28,8 @@ if __name__ == "__main__":
     
     ps = np.load(r"results\pagerank_p-value.npy")
     sig_ps = ps<0.05
+
+    #sig_ps = np.load(r"results\my_framework_sig_ps_ind.npy")
     predicted_label = []
 
     for i in range(len(label)):

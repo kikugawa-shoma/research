@@ -4,6 +4,7 @@ import PageRank as PR
 from collections import defaultdict
 import copy
 import community_find as cf
+import matplotlib.pyplot as plt
 
 class PagerankDecoder(SVC):
     def __init__(self,kernel="rbf",class_weight=None):
@@ -22,6 +23,7 @@ class PagerankDecoder(SVC):
 
 if __name__ == "__main__":
     accuracy = 0
+    sig_img = []
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
@@ -40,6 +42,7 @@ if __name__ == "__main__":
             if sig_ps_ind[i]:
                 if not sig_ps_ind1[i]:
                     diff += 1
+        sig_img.append(list(map(int,sig_ps_ind)))
 
         model = PagerankDecoder(class_weight="balanced")
         model.fit(pagerank.pr[:,sig_ps_ind],label)
@@ -49,6 +52,9 @@ if __name__ == "__main__":
             accuracy += 1
     accuracy = accuracy/51
     print(accuracy)
+
+    plt.matshow(sig_img,aspect=20)
+    plt.show()
 
     """
     predicted_label = []

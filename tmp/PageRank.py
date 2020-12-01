@@ -69,6 +69,10 @@ class PageRanks():
         """
         # targetを除いたグラフでのグラフクラスタリングを実行
         subj_classes = cf.ConfusionMatrix().community_detection_without(target)
+        with open(r"results\confusion_mat_classified_label.txt") as f:
+            subj_classes = list(map(int,f.readline().split()))
+        subj_classes[target] = None
+        subj_classes[14] = None
 
         # 各被験者のpagerankをグラフクラスタリングでのsubjectのクラスに分ける
         labels = list(filter(lambda x:x is not None,set(subj_classes)))

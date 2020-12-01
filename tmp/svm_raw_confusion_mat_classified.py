@@ -4,10 +4,13 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.metrics import accuracy_score
 from collections import defaultdict
+import scipy.io
 
 f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\confusion_mat_classified_label.txt")
 L = list(map(int,f.readline().split()))
 f.close()
+L = scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\confusion_mat_classified_label_kmeans.mat")["label1"]
+L = [l[0] for l in L]
 L_unique = list(set(L))
 
 filepath = r"C:\Users\ktmks\Documents\research\tmp_results\for_python_data\brain_f_data.mat"
@@ -37,6 +40,7 @@ for key in L_unique:
     labeled_y[key] = np.array(labeled_y[key])
 
 label_cnt = [0]*len(L_unique)
+
 for i in range(subject_N):
     if i == 14:
         accuracy_test[i] = 0.5
@@ -53,7 +57,7 @@ for i in range(subject_N):
     print(i," : ",accuracy_test[i])
     label_cnt[Li] += 1
 
-f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\svm_raw_confusion_mat_classified.txt","w")
+f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\svm_raw_confusion_mat_kmean_classified.txt","w")
 for i in range(subject_N):
     print(accuracy_test[i],file=f,end=" ")
 f.close()

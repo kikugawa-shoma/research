@@ -7,7 +7,7 @@ x = []
 root = "C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\"
 filenames = [
     "svm_raw",
-    "svm_raw_pagerank_classified",
+    "svm_raw_confusion_mat_classified",
     ]
 
 for i in range(len(filenames)):

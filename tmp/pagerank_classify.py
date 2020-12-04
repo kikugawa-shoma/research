@@ -27,6 +27,13 @@ if __name__ == "__main__":
     
     ps = np.load(r"results\pagerank_p-value.npy")
     sig_ps = ps<0.05
+    
+    with open(r"results\handmade_sig_ps_ind.txt") as f:
+        inds = list(map(int,f.readline().split()))
+    sig_ps = [False]*len(sig_ps)
+    for i in range(len(inds)):
+        sig_ps[inds[i]] = True
+
     predicted_label = []
     for i in range(len(label)):
         model = PagerankDecoder()

@@ -70,6 +70,7 @@ class PageRanks():
         """
         # targetを除いたグラフでのグラフクラスタリングを実行
         subj_classes = cf.ConfusionMatrix().community_detection_without(target)
+
         with open(r"results\confusion_mat_classified_label.txt") as f:
             subj_classes = list(map(int,f.readline().split()))
         subj_classes[target] = None
@@ -97,6 +98,9 @@ class PageRanks():
         # pagerankの各要素に対して2 subject class間で平均に関するt検定
         _,ps = stats.ttest_ind(classified_pagerank[labels[0]],
                                 classified_pagerank[labels[1]])
+        plt.hist(ps)
+        plt.show()
+        
 
         # 描画（デバッグ用）
         """

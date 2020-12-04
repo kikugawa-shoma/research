@@ -34,8 +34,3 @@ if __name__ == "__main__":
     predicted_label = np.array(predicted_label)
     label = np.array(label)
     print(sum(label == predicted_label)/51)
-
-    
-    
-
-

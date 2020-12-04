@@ -23,7 +23,6 @@ class PagerankDecoder(SVC):
 
 if __name__ == "__main__":
     accuracy = 0
-    sig_img = []
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
@@ -34,27 +33,20 @@ if __name__ == "__main__":
         label[target] = None
 
         pagerank = PR.PageRanks()
-        
-        sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target)
+
+        sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target,alpha=0.005,oversampling=True)
+        print(sum(sig_ps_ind))
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
-        diff = 0
-        for i in range(len(sig_ps_ind)):
-            if sig_ps_ind[i]:
-                if not sig_ps_ind1[i]:
-                    diff += 1
-        sig_img.append(list(map(int,sig_ps_ind)))
 
         model = PagerankDecoder(class_weight="balanced")
         model.fit(pagerank.pr[:,sig_ps_ind],label)
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
-        print(target,all_label[target],pred,diff)
+        print(target,all_label[target],pred)
         if all_label[target] == pred[0]:
             accuracy += 1
     accuracy = accuracy/51
     print(accuracy)
 
-    plt.matshow(sig_img,aspect=20)
-    plt.show()
 
     """
     predicted_label = []

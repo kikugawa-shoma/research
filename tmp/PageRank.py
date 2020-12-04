@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import community_find as cf
 from collections import defaultdict
 from scipy import stats
+import itertools
 
 class PageRanks():
     """
@@ -51,7 +52,7 @@ class PageRanks():
                 D[i][j] = np.linalg.norm(self.pr[i]-self.pr[j])
         return D
     
-    def ttest_significant_ind(self,target,alpha=0.05):
+    def ttest_significant_ind(self,target,alpha=0.05,oversampling = False):
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト
@@ -82,8 +83,19 @@ class PageRanks():
                 continue
             classified_pagerank[subj_classes[i]].append(self.pr[i])
         
+        # オーバーサンプリング(少ないほうの被験者クラスタのページランクをクロスオーバーにより水増しする)
+        if oversampling:
+            s_label,l_label = 0,1
+            if len(classified_pagerank[s_label]) > len(classified_pagerank[l_label]):
+                s_label,l_label = l_label,s_label
+            combs = itertools.combinations([i for i in range(len(classified_pagerank[s_label]))],2)
+            for comb in combs:
+                classified_pagerank[s_label].append((classified_pagerank[s_label][comb[0]]+classified_pagerank[s_label][comb[1]])/2)
+                if len(classified_pagerank[s_label]) == len(classified_pagerank[l_label]):
+                    break
+
         # pagerankの各要素に対して2 subject class間で平均に関するt検定
-        ts,ps = stats.ttest_ind(classified_pagerank[labels[0]],
+        _,ps = stats.ttest_ind(classified_pagerank[labels[0]],
                                 classified_pagerank[labels[1]])
 
         # 描画（デバッグ用）

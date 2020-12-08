@@ -52,7 +52,8 @@ class PageRanks():
                 D[i][j] = np.linalg.norm(self.pr[i]-self.pr[j])
         return D
     
-    def ttest_significant_ind(self,target,alpha=0.05,oversampling = False):
+    def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
+        print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト
@@ -85,21 +86,28 @@ class PageRanks():
             classified_pagerank[subj_classes[i]].append(self.pr[i])
         
         # オーバーサンプリング(少ないほうの被験者クラスタのページランクをクロスオーバーにより水増しする)
-        if oversampling:
+        if sampling == "over":
             s_label,l_label = 0,1
             if len(classified_pagerank[s_label]) > len(classified_pagerank[l_label]):
                 s_label,l_label = l_label,s_label
             combs = itertools.combinations([i for i in range(len(classified_pagerank[s_label]))],2)
-            for comb in combs:
+            for i,comb in enumerate(combs):
                 classified_pagerank[s_label].append((classified_pagerank[s_label][comb[0]]+classified_pagerank[s_label][comb[1]])/2)
+                if i == sample_diff:
+                    break
                 if len(classified_pagerank[s_label]) == len(classified_pagerank[l_label]):
                     break
+
+        elif sampling == "under":
+            s_label,l_label = 0,1
+            if len(classified_pagerank[s_label]) > len(classified_pagerank[l_label]):
+                s_label,l_label = l_label,s_label
+            for i in range(sample_diff):
+                del classified_pagerank[l_label][0]
 
         # pagerankの各要素に対して2 subject class間で平均に関するt検定
         _,ps = stats.ttest_ind(classified_pagerank[labels[0]],
                                 classified_pagerank[labels[1]])
-        plt.hist(ps)
-        plt.show()
         
 
         # 描画（デバッグ用）

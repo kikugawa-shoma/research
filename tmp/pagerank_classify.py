@@ -7,8 +7,8 @@ import community_find as cf
 import matplotlib.pyplot as plt
 
 class PagerankDecoder(SVC):
-    def __init__(self,kernel="rbf",class_weight=None):
-        super().__init__(kernel=kernel,class_weight=class_weight)
+    def __init__(self,C,gamma,kernel="rbf",class_weight=None):
+        super().__init__(C=C,gamma=gamma,kernel=kernel,class_weight=class_weight)
     def fit(self,X,Y):
         X = np.array(X)
         Y = np.array(Y)
@@ -24,6 +24,7 @@ class PagerankDecoder(SVC):
 if __name__ == "__main__":
     accuracy = 0
     sig_img = []
+    predicted_label = []
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
@@ -32,16 +33,18 @@ if __name__ == "__main__":
             all_label = list(map(int,f.readline().split()))
         label = copy.copy(all_label)
         label[target] = None
+        label[14] = 1
 
         pagerank = PR.PageRanks()
 
-        sig_ps_ind = PR.PageRanks().ttest_significant_ind(target = target,alpha=0.05,oversampling=False)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling="under",sample_diff=35)
         sig_img.append(sig_ps_ind)
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 
-        model = PagerankDecoder(class_weight="balanced")
+        model = PagerankDecoder(C=1,gamma=100,class_weight="balanced")
         model.fit(pagerank.pr[:,sig_ps_ind],label)
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
+        predicted_label.append(pred[0])
         print(target,all_label[target],pred,sum(sig_ps_ind))
         if all_label[target] == pred[0]:
             accuracy += 1

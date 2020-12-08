@@ -33,16 +33,16 @@ if __name__ == "__main__":
             all_label = list(map(int,f.readline().split()))
         label = copy.copy(all_label)
         label[target] = None
-        label[14] = 1
 
         pagerank = PR.PageRanks()
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling="under",sample_diff=35)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=35)
         sig_img.append(sig_ps_ind)
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 
-        model = PagerankDecoder(C=1,gamma=100,class_weight="balanced")
-        model.fit(pagerank.pr[:,sig_ps_ind],label)
+        model = PagerankDecoder(C=1,gamma="auto",class_weight="balanced")
+        
+        model.fit(np.delete(pagerank.pr[:,sig_ps_ind],14,0),np.delete(label,14,0))
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
         predicted_label.append(pred[0])
         print(target,all_label[target],pred,sum(sig_ps_ind))

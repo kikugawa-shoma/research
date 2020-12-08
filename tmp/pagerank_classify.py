@@ -5,8 +5,8 @@ from collections import defaultdict
 import copy
 
 class PagerankDecoder(SVC):
-    def __init__(self,kernel="rbf"):
-        super().__init__(kernel=kernel,class_weight="balanced")
+    def __init__(self,C,gamma,kernel="rbf"):
+        super().__init__(kernel=kernel,class_weight="balanced",C=C,gamma=gamma)
     def fit_predict(self,X,Y,test_ind):
         X = np.array(X)
         Y = np.array(Y)
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     sig_ps = ps<0.05
     predicted_label = []
     for i in range(len(label)):
-        model = PagerankDecoder()
+        model = PagerankDecoder(C=1.0,gamma="scale")
         predicted_label.append(model.fit_predict(PR().pr[:,sig_ps],label,i))
     predicted_label = np.array(predicted_label)
     label = np.array(label)

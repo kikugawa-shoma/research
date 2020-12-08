@@ -6,7 +6,7 @@ import copy
 
 class PagerankDecoder(SVC):
     def __init__(self,kernel="rbf"):
-        super().__init__(kernel=kernel)
+        super().__init__(kernel=kernel,class_weight="balanced")
     def fit_predict(self,X,Y,test_ind):
         X = np.array(X)
         Y = np.array(Y)

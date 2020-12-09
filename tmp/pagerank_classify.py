@@ -5,6 +5,7 @@ from collections import defaultdict
 import copy
 import community_find as cf
 import matplotlib.pyplot as plt
+import itertools as it
 
 class PagerankDecoder(SVC):
     def __init__(self,C,gamma,kernel="rbf",class_weight=None):
@@ -22,44 +23,47 @@ class PagerankDecoder(SVC):
 
 
 if __name__ == "__main__":
-    accuracy = 0
-    sig_img = []
-    predicted_label = []
-    for target in range(51):
-        # label = cf.ConfusionMatrix().community_detection_without(target)
 
-        # This is the comment option
-        with open(r"results\confusion_mat_classified_label.txt") as f:
-            all_label = list(map(int,f.readline().split()))
-        label = copy.copy(all_label)
-        label[target] = None
-
-        pagerank = PR.PageRanks()
-
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=10)
-        sig_img.append(sig_ps_ind)
-        sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
-
-        model = PagerankDecoder(C=1,gamma="auto",class_weight="balanced")
-        
-        model.fit(np.delete(pagerank.pr[:,sig_ps_ind],14,0),np.delete(label,14,0))
-        pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
-        predicted_label.append(pred[0])
-        print(target,all_label[target],pred,sum(sig_ps_ind))
-        if all_label[target] == pred[0]:
-            accuracy += 1
-    accuracy = accuracy/51
-    print(accuracy)
-    plt.matshow(sig_img,aspect=20)
-    plt.show()
+    gamma = ["scale","auto"]
+    C = [1.0]
+    class_weight = [None,"balanced"]
+    sampling = ["over","under",None]
+    sample_diff = [5*i for i in range(6)]
+    params = []
+    for ia in gamma:
+        for ib in C:
+            for ic in class_weight:
+                for idd in sampling:
+                    for ie in sample_diff:
+                        params.append([ia,ib,ic,idd,ie])
 
 
-    """
-    predicted_label = []
-    for i in range(len(label)):
-        model = PagerankDecoder()
-        predicted_label.append(model.fit_predict(PR().pr[:,sig_ps],label,i))
-    predicted_label = np.array(predicted_label)
-    label = np.array(label)
-    print(sum(label == predicted_label)/51)
-    """
+    accuracy = []
+    for i in range(len(params)):
+        if i%10 == 0:
+            print("{}/{}".format(i,len(params)))
+        acc = 0
+        predicted_label = []
+        for target in range(51):
+            # label = cf.ConfusionMatrix().community_detection_without(target)
+
+            # This is the comment option
+            with open(r"results\confusion_mat_classified_label.txt") as f:
+                all_label = list(map(int,f.readline().split()))
+            label = copy.copy(all_label)
+            label[target] = None
+
+            pagerank = PR.PageRanks()
+
+            sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=params[i][3],sample_diff=params[i][4])
+
+            model = PagerankDecoder(C=params[i][1],gamma=params[i][0],class_weight=params[i][2])
+            
+            model.fit(np.delete(pagerank.pr[:,sig_ps_ind],14,0),np.delete(label,14,0))
+            pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
+            predicted_label.append(pred[0])
+            if all_label[target] == pred[0]:
+                acc += 1
+        accuracy.append(acc/51)
+
+

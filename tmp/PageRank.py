@@ -60,7 +60,6 @@ class PageRanks():
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
-        print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト

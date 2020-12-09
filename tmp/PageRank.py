@@ -33,6 +33,13 @@ class PageRanks():
                 self.pr.append(list(map(float,tmp[i].split())))
         self.pr = np.array(self.pr)
     
+    def normalize1(self):
+        for i in range(self.N):
+            self.pr[i] = self.pr[i]/np.linalg.norm(self.pr[i],2)
+    def normalize2(self):
+        for i in range(len(self.pr[0])):
+            self.pr[:,i] = self.pr[:,i]/np.linalg.norm(self.pr[:,i],2)
+    
     def show(self):
         """
         pagerankを画像として表示

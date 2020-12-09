@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
         pagerank = PR.PageRanks()
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=35)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=10)
         sig_img.append(sig_ps_ind)
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 

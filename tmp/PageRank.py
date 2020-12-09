@@ -60,7 +60,6 @@ class PageRanks():
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
-        print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト
@@ -97,13 +96,8 @@ class PageRanks():
             s_label,l_label = 0,1
             if len(classified_pagerank[s_label]) > len(classified_pagerank[l_label]):
                 s_label,l_label = l_label,s_label
-            combs = itertools.combinations([i for i in range(len(classified_pagerank[s_label]))],2)
-            for i,comb in enumerate(combs):
-                classified_pagerank[s_label].append((classified_pagerank[s_label][comb[0]]+classified_pagerank[s_label][comb[1]])/2)
-                if i == sample_diff:
-                    break
-                if len(classified_pagerank[s_label]) == len(classified_pagerank[l_label]):
-                    break
+            for i in range(sample_diff):
+                classified_pagerank[s_label].append(classified_pagerank[s_label][i%len(classified_pagerank[s_label])])
 
         elif sampling == "under":
             s_label,l_label = 0,1

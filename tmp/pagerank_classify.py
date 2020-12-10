@@ -63,9 +63,6 @@ if __name__ == "__main__":
                 tmp += 1
         print("{} {} {} {} {}".format(target,all_label[target],pred[0],sum(sig_ps_ind),tmp/len(sig_ps_indexes)))
         
-
-
-
     accuracy = accuracy/51
     print(accuracy)
     plt.matshow(sig_img,aspect=20)

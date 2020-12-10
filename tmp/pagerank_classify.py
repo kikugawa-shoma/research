@@ -5,6 +5,7 @@ from collections import defaultdict
 import copy
 import community_find as cf
 import matplotlib.pyplot as plt
+from statistics import mean
 
 class PagerankDecoder(SVC):
     def __init__(self,C,gamma,kernel="rbf",class_weight=None):
@@ -37,7 +38,7 @@ if __name__ == "__main__":
 
         pagerank = PR.PageRanks()
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling="over",sample_diff=3)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.005,sampling="over",sample_diff=30)
         sig_img.append(sig_ps_ind)
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 
@@ -46,9 +47,25 @@ if __name__ == "__main__":
         model.fit(np.delete(pagerank.pr[:,sig_ps_ind],14,0),np.delete(label,14,0))
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
         predicted_label.append(pred[0])
-        print("{} {} {}".format(target,pred[0],sum(sig_ps_ind)))
         if all_label[target] == pred[0]:
             accuracy += 1
+
+        # analyze
+        if target == 14:
+            continue
+        sig_ps_indexes = [i for i,x in enumerate(sig_ps_ind) if x]
+        tmp = 0
+        for i in range(len(sig_ps_indexes)):
+            m_other = mean(pagerank.pr[label==(1-all_label[target]),sig_ps_indexes[i]])
+            m_target = mean(pagerank.pr[label==(all_label[target]),sig_ps_indexes[i]])
+
+            if abs(pagerank.pr[target,sig_ps_indexes[i]]-m_target)<abs(pagerank.pr[target,sig_ps_indexes[i]]-m_other):
+                tmp += 1
+        print("{} {} {} {} {}".format(target,all_label[target],pred[0],sum(sig_ps_ind),tmp/len(sig_ps_indexes)))
+        
+
+
+
     accuracy = accuracy/51
     print(accuracy)
     plt.matshow(sig_img,aspect=20)

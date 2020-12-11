@@ -34,9 +34,9 @@ if __name__ == "__main__":
         label = copy.copy(all_label)
         label[target] = None
 
-        pagerank = PR.PageRanks()
+        pagerank = PR.PageRanks(weighted=True)
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling="under",sample_diff=30)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.03,sampling=None,sample_diff=30)
         sig_img.append(sig_ps_ind)
         sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 

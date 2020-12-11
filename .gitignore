@@ -8,3 +8,4 @@
 *.npy
 *.yml
 __pycache__
+*.npz

@@ -3,8 +3,10 @@
 /input_data
 /ResearchProgressReports
 /.vscode
+/tmp/results
 *.mat
 *.txt
 *.yml
 *.npy
 tmp/__pycache__
+*.npz

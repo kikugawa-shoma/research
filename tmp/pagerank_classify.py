@@ -25,7 +25,7 @@ if __name__ == "__main__":
     with open(r"results\confusion_mat_classified_label.txt") as f:
         label = list(map(int,f.readline().split()))
     
-    ps = np.load(r"results\pagerank_p-value.npy")
+    ps = np.load(r"results\weighted_pagerank_p-value.npy")
     sig_ps = ps<0.05
     predicted_label = []
     for i in range(len(label)):

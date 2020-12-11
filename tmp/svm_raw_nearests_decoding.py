@@ -6,15 +6,10 @@ from sklearn.metrics import accuracy_score
 
 class PageRanks():
     def __init__(self,
-                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\feature_values.txt"):
+                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz"):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        self.pr = []
-        with open(filepath) as f:
-            tmp = f.read().split("\n")
-            for i in range(len(subj_list)):
-                self.pr.append(list(map(float,tmp[i].split())))
-        self.pr = np.array(self.pr)
+        self.pr = np.load(filepath)["w_pageranks"]
     
     def show(self):
         plt.figure(figsize=[20,20])

@@ -6,10 +6,14 @@ from sklearn.metrics import accuracy_score
 
 class PageRanks():
     def __init__(self,
-                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz"):
+                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",weighted="True"):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        self.pr = np.load(filepath)["w_pageranks"]
+        if weighted:
+            self.pr = np.load(filepath)["w_pageranks"]
+        else:
+            self.pr = np.load(filepath)["pageranks"]
+
 
     
     def show(self):

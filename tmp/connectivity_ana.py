@@ -50,7 +50,7 @@ with open(class_label_path,mode="r") as f:
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 
-pagerank = PR.PageRanks()
+pagerank = PR.PageRanks(weighted=True)
 
 #conversion matrixによるクラスタリングでのグループ間の各roiのpagerankの平均に関するt検定
 c_pagerank = [[] for _ in range(len(set(labels)))]

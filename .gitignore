@@ -9,4 +9,3 @@
 *.yml
 __pycache__
 *.npz
-results

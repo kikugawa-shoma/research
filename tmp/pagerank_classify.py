@@ -34,6 +34,10 @@ if __name__ == "__main__":
             all_label[i] = 1
         elif all_label[i] == 3:
             all_label[i] = 1
+    """
+    with open("results\\confusion_mat_classified_label.txt") as f:
+        all_label = list(map(int,f.readline().split()))
+    """
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 

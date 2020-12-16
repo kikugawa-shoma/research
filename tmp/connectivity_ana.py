@@ -44,9 +44,15 @@ def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
     return p_value
 
 #データの前準備
-class_label_path = r"C:\Users\ktmks\Documents\research\tmp\results\confusion_mat_classified_label.txt"
-with open(class_label_path,mode="r") as f:
-    labels = list(map(int,f.read().split()))
+labels = list(scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\kmeans.mat")["label1"][:,0])
+for i in range(len(labels)):
+    if labels[i] == 1:
+        labels[i] = 1
+    elif labels[i] == 2:
+        labels[i] = 0
+    elif labels[i] == 3:
+        labels[i] = 1
+
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 
@@ -60,8 +66,9 @@ for i in range(pagerank.N):
 
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
-plt.hist(ps,bins=10)
-plt.plot([0,1],[len(ps)/10,len(ps)/10],linestyle="dashed",color="black")
+bins = 20
+plt.hist(ps,bins=bins)
+plt.plot([0,1],[len(ps)/bins,len(ps)/bins],linestyle="dashed",color="black")
 plt.show()
 
 

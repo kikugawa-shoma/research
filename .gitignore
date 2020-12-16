@@ -8,5 +8,4 @@
 *.txt
 *.yml
 *.npy
-tmp/__pycache__
-*.npz
+tmp/_pycache__

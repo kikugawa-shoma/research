@@ -5,6 +5,7 @@ from collections import defaultdict
 import copy
 import community_find as cf
 import matplotlib.pyplot as plt
+import scipy
 
 class PagerankDecoder(SVC):
     def __init__(self,C,gamma,kernel="rbf",class_weight=None):
@@ -29,8 +30,14 @@ if __name__ == "__main__":
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
         # This is the comment option
-        with open(r"results\confusion_mat_classified_label.txt") as f:
-            all_label = list(map(int,f.readline().split()))
+        all_label = list(scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\kmeans.mat")["label1"][:,0])
+        for i in range(len(all_label)):
+            if all_label[i] == 1:
+                all_label[i] = 0
+            elif all_label[i] == 2:
+                all_label[i] = 1
+            elif all_label[i] == 3:
+                all_label[i] = 1
         label = copy.copy(all_label)
         label[target] = None
 

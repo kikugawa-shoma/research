@@ -28,7 +28,7 @@ class PageRanks():
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
         if weighted:
-            self.pr = np.load(filepath)["w_pageranks"]
+            self.pr = np.load(filepath)["wt_pageranks"]
         else :
             self.pr = np.load(filepath)["pageranks"]
     
@@ -80,7 +80,15 @@ class PageRanks():
 
         with open(r"results\confusion_mat_classified_label.txt") as f:
             subj_classes = list(map(int,f.readline().split()))
-        subj_classes[target] = None
+
+        subj_classes = list(scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\kmeans.mat")["label1"][:,0])
+        for i in range(len(subj_classes)):
+            if subj_classes[i] == 1:
+                subj_classes[i] = 0
+            elif subj_classes[i] == 2:
+                subj_classes[i] = 1
+            elif subj_classes[i] == 3:
+                subj_classes[i] = 1
         subj_classes[14] = None
 
         # 各被験者のpagerankをグラフクラスタリングでのsubjectのクラスに分ける

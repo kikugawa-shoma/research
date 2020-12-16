@@ -8,3 +8,5 @@
 *.npy
 *.yml
 __pycache__
+/results
+*.npz

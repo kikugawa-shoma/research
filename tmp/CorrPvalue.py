@@ -49,7 +49,7 @@ class PR_Value():
                     self.r[i][j] = np.random.normal(mr,stdr)
 
     #P値の行列から閾値で0/1の隣接行列を作る
-    def make_adj_mat(self):
+    def make_adj_mat(self,alpha=None):
         """
         Parameters
         ----------
@@ -57,7 +57,11 @@ class PR_Value():
         Returns
         -------
         """
-        self.adj_mat = self.p < (0.05/(self.N*(self.N-1)//2))
+        if alpha==None:
+            self.adj_mat = self.p < (0.05/(self.N*(self.N-1)//2))
+        else:
+            self.adj_mat = self.p < alpha
+
         for i in range(self.N):
             self.adj_mat[i][i] = False
 
@@ -82,7 +86,7 @@ class PR_Value():
         G.add_edges_from(edges)
         return Connectivity(G)
 
-    def create_weighted_network(self,directed=False,weighted=False):
+    def create_weighted_network(self,directed=False,weighted=False,alpha=None):
         """
         Parameters
         ----------
@@ -91,8 +95,6 @@ class PR_Value():
         -------
         Connectivity(G) : Connectivity object
         """
-        self.make_adj_mat()
-
         nodes = [i for i in range(1,self.N+1)]
         edges = []
 
@@ -102,6 +104,29 @@ class PR_Value():
         for i in range(1,self.N):
             for j in range(1,self.N):
                 if i>j:
+                    G.add_edge(i,j,weight=abs(self.r[i][j]))
+        return Connectivity(G)
+
+    def create_thleashold_weighted_network(self,alpha,directed=False,weighted=False):
+        """
+        Parameters
+        ----------
+
+        Returns
+        -------
+        Connectivity(G) : Connectivity object
+        """
+        self.make_adj_mat(alpha=alpha)
+
+        nodes = [i for i in range(1,self.N+1)]
+        edges = []
+
+        G = nx.Graph()
+        G.add_nodes_from(nodes)
+        G.add_edges_from(edges)
+        for i in range(1,self.N):
+            for j in range(1,self.N):
+                if i>j and self.adj_mat[i][j]:
                     G.add_edge(i,j,weight=abs(self.r[i][j]))
         return Connectivity(G)
     
@@ -121,6 +146,7 @@ if __name__ == "__main__":
     subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
     w_pageranks = [] # 相関係数の重みありで計算したpagerank
     pageranks = [] # 重みなしで計算しpagerank
+    wt_pageranks = [] # 相関係数の重みありp値による閾値ありで計算したpagerank
 
     for cnt,subj in enumerate(subj_list):
         print(subj)
@@ -130,7 +156,13 @@ if __name__ == "__main__":
 
         conn = pr_value.create_network()
         pageranks.append(conn.pagerank())
+
+        wt_conn = pr_value.create_thleashold_weighted_network(0.05)
+        wt_pageranks.append(wt_conn.pagerank())
+
     pageranks = np.array(pageranks)
     w_pageranks = np.array(w_pageranks)
-    np.savez("results\\pageranks",pageranks=pageranks,w_pageranks=w_pageranks)
+    wt_pageranks = np.array(wt_pageranks)
+
+    np.savez("results\\pageranks",pageranks=pageranks,w_pageranks=w_pageranks,wt_pageranks=wt_pageranks)
 

@@ -26,30 +26,30 @@ if __name__ == "__main__":
     accuracy = 0
     sig_img = []
     predicted_label = []
+    all_label = list(scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\kmeans.mat")["label1"][:,0])
+    for i in range(len(all_label)):
+        if all_label[i] == 1:
+            all_label[i] = 0
+        elif all_label[i] == 2:
+            all_label[i] = 1
+        elif all_label[i] == 3:
+            all_label[i] = 1
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
         # This is the comment option
-        all_label = list(scipy.io.loadmat(r"C:\Users\ktmks\Documents\my_matlab\make_figures\kmeans.mat")["label1"][:,0])
-        for i in range(len(all_label)):
-            if all_label[i] == 1:
-                all_label[i] = 0
-            elif all_label[i] == 2:
-                all_label[i] = 1
-            elif all_label[i] == 3:
-                all_label[i] = 1
         label = copy.copy(all_label)
         label[target] = None
 
-        pagerank = PR.PageRanks(weighted=True)
+        pagerank = PR.PageRanks(weighted="w")
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.03,sampling=None,sample_diff=30)
+        sig_ps_ind = pagerank.ttest_significant_ind(target = target,alpha=0.05,sampling=None)
         sig_img.append(sig_ps_ind)
-        sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
+        # sig_ps_ind1 = np.load(r"results\e_num5\sig_ps.npy")
 
-        model = PagerankDecoder(C=1,gamma="scale",class_weight="balanced")
+        model = PagerankDecoder(C=1,gamma="auto",class_weight="balanced")
         
-        model.fit(np.delete(pagerank.pr[:,sig_ps_ind],14,0),np.delete(label,14,0))
+        model.fit(pagerank.pr[:,sig_ps_ind],label)
         pred = model.predict(pagerank.pr[target,sig_ps_ind].reshape(1,-1))
         predicted_label.append(pred[0])
         print(target,all_label[target],pred,sum(sig_ps_ind))

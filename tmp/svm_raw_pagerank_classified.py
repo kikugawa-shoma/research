@@ -37,9 +37,6 @@ for key in L_unique:
 
 label_cnt = [0]*len(L_unique)
 for i in range(subject_N):
-    if i == 14:
-        accuracy_test[i] = 0.5
-        continue
 
     Li = L[i]
 

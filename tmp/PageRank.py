@@ -23,13 +23,15 @@ class PageRanks():
     """
     def __init__(self,
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",
-                 weighted=True
+                 weighted="wt"
                  ):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        if weighted:
+        if weighted == "wt":
             self.pr = np.load(filepath)["wt_pageranks"]
-        else :
+        elif weighted == "w":
+            self.pr = np.load(filepath)["w_pageranks"]
+        elif weighted == "p" :
             self.pr = np.load(filepath)["pageranks"]
     
     def normalize1(self):
@@ -59,7 +61,6 @@ class PageRanks():
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
-        print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト
@@ -89,7 +90,7 @@ class PageRanks():
                 subj_classes[i] = 1
             elif subj_classes[i] == 3:
                 subj_classes[i] = 1
-        subj_classes[14] = None
+        subj_classes[target] = None
 
         # 各被験者のpagerankをグラフクラスタリングでのsubjectのクラスに分ける
         labels = list(filter(lambda x:x is not None,set(subj_classes)))

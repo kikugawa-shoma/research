@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
         d = {1:sum(all_label==0),0:sum(all_label==1)}
 
-        model = SVC(C=1,gamma="auto",kernel="rbf",class_weight="balanced")
+        model = SVC(C=1,gamma="scale",kernel="poly",class_weight="balanced",degree=7)
         model.fit(pagerank.pr[train_ind,:][:,sig_ps_ind],all_label[train_ind])
 
         for i in range(51):

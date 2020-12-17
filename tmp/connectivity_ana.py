@@ -47,6 +47,16 @@ def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
 class_label_path = r"C:\Users\ktmks\Documents\research\tmp\results\confusion_mat_classified_label.txt"
 with open(class_label_path,mode="r") as f:
     labels = list(map(int,f.read().split()))
+"""
+labels = list(scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\make_figures\\kmeans.mat")["label1"][:,0])
+for i in range(len(labels)):
+    if labels[i] ==  1:
+        labels[i] = 0
+    elif labels[i] == 2:
+        labels[i] = 1
+    elif labels[i] == 3:
+        labels[i] = 1
+"""
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 

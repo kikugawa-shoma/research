@@ -9,10 +9,12 @@ class PageRanks():
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",weighted="True"):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        if weighted:
-            self.pr = np.load(filepath)["w_pageranks"]
-        else:
+        if weighted=="p":
             self.pr = np.load(filepath)["pageranks"]
+        elif weighted=="w":
+            self.pr = np.load(filepath)["w_pageranks"]
+        elif weighted=="wt":
+            self.pr = np.load(filepath)["wt_pageranks"]
 
 
     

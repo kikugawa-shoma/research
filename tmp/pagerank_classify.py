@@ -1,4 +1,4 @@
-from sklearn.svm import SVC
+from sklearn.linear_model import ARDRegression
 import numpy as np
 import PageRank as PR
 from collections import defaultdict
@@ -30,18 +30,14 @@ if __name__ == "__main__":
 
         train_ind = np.array([True if i!=target else False for i in range(51)])
 
-        sig_ps_ind = pagerank.ttest_significant_ind(target=target)
-
-        d = {1:sum(all_label==0),0:sum(all_label==1)}
-
-        model = SVC(C=1,gamma="scale",kernel="poly",class_weight="balanced",degree=7)
-        model.fit(pagerank.pr[train_ind,:][:,sig_ps_ind],all_label[train_ind])
+        model = ARDRegression()
+        model.fit(pagerank.pr[train_ind,:],all_label[train_ind])
 
         for i in range(51):
-            print(model.predict(pagerank.pr[i,][sig_ps_ind].reshape(1,-1))[0],end=" ")
+            print(model.predict(pagerank.pr[i,].reshape(1,-1))[0],end=" ")
         print("")
 
-        pred = model.predict(pagerank.pr[target,:][sig_ps_ind].reshape(1,-1))
+        pred = model.predict(pagerank.pr[target,:].reshape(1,-1))
         predicted_label.append(pred[0])
         if all_label[target] == pred[0]:
             accuracy += 1

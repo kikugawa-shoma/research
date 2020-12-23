@@ -18,7 +18,8 @@ class P_Value():
     """
 
     def __init__(self,subj):
-        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + r"\rest\regressed_out\regressed_inter_sl_con_roi_brodmann_all_e_num5.mat","r")
+        filename = "regressed_inter_sl_con_roi_brodmann_all_e_num5"
+        f = h5py.File(r"C:\Users\ktmks\Documents\my_sources\20" + r"\{:0>3}".format(subj) + "\\rest\\regressed_out\\" + filename + ".mat" ,"r")
         self.p = np.array(f["Ps"][:][:])
         self.r = np.array(f["Rs"][:][:])
         self.N = len(self.p)
@@ -73,6 +74,7 @@ if __name__ == "__main__":
     pageranks = []
     for cnt,subj in enumerate(subj_list):
         p_value = P_Value(subj)
+        print(subj)
         conn = p_value.create_network()
         pageranks.append(conn.pagerank())
     pageranks = np.array(pageranks)

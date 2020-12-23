@@ -3,6 +3,7 @@
 /input_data
 /ResearchProgressReports
 /.vscode
+/tmp/results
 *.mat
 *.txt
 *.yml

@@ -6,15 +6,17 @@ from sklearn.metrics import accuracy_score
 
 class PageRanks():
     def __init__(self,
-                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\feature_values.txt"):
+                 filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",weighted="True"):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        self.pr = []
-        with open(filepath) as f:
-            tmp = f.read().split("\n")
-            for i in range(len(subj_list)):
-                self.pr.append(list(map(float,tmp[i].split())))
-        self.pr = np.array(self.pr)
+        if weighted=="p":
+            self.pr = np.load(filepath)["pageranks"]
+        elif weighted=="w":
+            self.pr = np.load(filepath)["w_pageranks"]
+        elif weighted=="wt":
+            self.pr = np.load(filepath)["wt_pageranks"]
+
+
     
     def show(self):
         plt.figure(figsize=[20,20])
@@ -39,7 +41,7 @@ class NearestsDecoder(SVC):
     
     def nearest_fit(self,subj_ind,train_num=10):
         T_argsort = self.T[subj_ind].argsort()
-        train_subj = T_argsort[1:train_num]
+        train_subj = T_argsort[1:train_num+1]
         inds = []
         for i in range(train_num-1):
             ind = train_subj[i]
@@ -66,7 +68,7 @@ if __name__ == "__main__":
     x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
     y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-    train_num_list = [5*i for i in range(1,11)]
+    train_num_list = [47,48,49,50]
     accuracy_test = [[0]*subject_N for _ in range(len(train_num_list))]
 
     for j,train_num in enumerate(train_num_list):

@@ -7,3 +7,8 @@
 *.txt
 *.yml
 *.npy
+__pycache__
+tools/mapalign/__pycache__
+*.npz
+
+

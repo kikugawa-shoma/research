@@ -35,7 +35,7 @@ for subj in subj_list:
     dmap_r = Dmap_r(subj)
     dmapmodel = DiffusionMapEmbedding(alpha=0.5,
                                  diffusion_time = 10,
-                                 affinity="nearest_neighbors",
+                                 affinity="precomputed",
                                  n_components=5)
     de = dmapmodel.fit_transform(dmap_r.r)
     des.append(de)

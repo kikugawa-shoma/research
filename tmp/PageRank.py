@@ -22,15 +22,19 @@ class PageRanks():
     self.pr : 各被験者のpagerank[subject num,searchligh num]
     """
     def __init__(self,
+                 pagerank_f,
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",
-                 weighted=True
+                 weighted=True,
                  ):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        if weighted:
-            self.pr = np.load(filepath)["w_pageranks"]
-        else :
-            self.pr = np.load(filepath)["pageranks"]
+        if pagerank_f:
+            if weighted:
+                self.pr = np.load(filepath)["w_pageranks"]
+            else :
+                self.pr = np.load(filepath)["pageranks"]
+        else:
+
     
     def normalize1(self):
         for i in range(self.N):

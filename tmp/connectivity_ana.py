@@ -47,7 +47,7 @@ def chi_squared_test(xs,bin_n = 10,a = 0,b = 1):
 class_label_path = r"C:\Users\ktmks\Documents\research\tmp\results\confusion_mat_classified_label.txt"
 with open(class_label_path,mode="r") as f:
     labels = list(map(int,f.read().split()))
-
+"""
 labels = list(scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\make_figures\\kmeans.mat")["label1"][:,0])
 for i in range(len(labels)):
     if labels[i] ==  1:
@@ -56,18 +56,24 @@ for i in range(len(labels)):
         labels[i] = 1
     elif labels[i] == 3:
         labels[i] = 1
+"""
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 
-pagerank = PR.PageRanks(weighted="wt")
+feature_value = PR.PageRanks(weighted="wt").pr
+tmp = np.load("results/dmap_feature.npy")
+feature_value = []
+for i in range(len(tmp)):
+    feature_value.append(tmp[i][:,2])
+
 
 #conversion matrixによるクラスタリングでのグループ間の各roiのpagerankの平均に関するt検定
-c_pagerank = [[] for _ in range(len(set(labels)))]
-for i in range(pagerank.N):
+c_feature_value = [[] for _ in range(len(set(labels)))]
+for i in range(len(feature_value)):
     L = labels[i]
-    c_pagerank[L].append(pagerank.pr[i])
+    c_feature_value[L].append(feature_value[i])
 
-ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
+ts,ps = stats.ttest_ind(c_feature_value[0],c_feature_value[1])
 
 plt.hist(ps,bins=10)
 plt.plot([0,1],[len(ps)/10,len(ps)/10],linestyle="dashed",color="black")

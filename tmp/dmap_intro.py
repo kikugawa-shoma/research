@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 def compare_methods(X, title, cluster=None):
     f, axarr = plt.subplots(2, 7, sharex=True, sharey=True, figsize=(15, 5))
     for idx, t in enumerate([0, 0.1, 1, 10, 100, 250, 1000]):
-        de = DiffusionMapEmbedding(alpha=0.5, diffusion_time=t, affinity='markov',
+        de = DiffusionMapEmbedding(alpha=0.5, diffusion_time=t, affinity='nearest_neighbors',
                                    n_components=10).fit_transform(X.copy())
         ed = (de - de[0, :])
         ed = np.sqrt(np.sum(ed * ed , axis=1))

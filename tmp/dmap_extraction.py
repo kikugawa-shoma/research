@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 des = []
 
-for i in range(5):
+for i in range(len(subj_list)):
 
     filepath = "C:\\Users\\ktmks\\Documents\\my_sources\\20\\{}\\rest\\regressed_out\\regressed_roi_brodmann_all_e_num5.mat"
     X = np.array(h5py.File(filepath.format(str(subj_list[i]).rjust(3,"0")),"r")["X"]).T
@@ -20,3 +20,4 @@ for i in range(5):
     ed = np.sqrt(np.sum(ed * ed , axis=1))
     ed = ed/max(ed)
     des.append(ed)
+    np.save("results/dmap_extraction.npy",des)

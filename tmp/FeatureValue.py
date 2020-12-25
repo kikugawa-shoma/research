@@ -6,7 +6,7 @@ from collections import defaultdict
 from scipy import stats
 import itertools
 
-class PageRanks():
+class FeatureValue():
     """
     rsfMRIから計算した各被験者のPagerankのクラス
 
@@ -19,33 +19,44 @@ class PageRanks():
     Attributes
     ----------
     self.N  : 被験者の人数
-    self.pr : 各被験者のpagerank[subject num,searchligh num]
+    self.fv : 各被験者のpagerank[subject num,searchligh num]
     """
     def __init__(self,
+                 feature_name,
+                 dmap_ind = None,
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",
                  weighted=True,
                  ):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        if weighted:
-            self.pr = np.load(filepath)["w_pageranks"]
-        else :
-            self.pr = np.load(filepath)["pageranks"]
+
+        if feature_name == "dmap":
+            tmp = np.load("results/dmap_feature.npy")
+            self.fv = []
+            for i in range(len(tmp)):
+                self.fv.append(tmp[i][:,dmap_ind])
+            self.fv = np.array(self.fv)
+
+        elif feature_name == "pagerank":
+            if weighted:
+                self.fv = np.load(filepath)["w_pageranks"]
+            else :
+                self.fv = np.load(filepath)["pageranks"]
 
     
     def normalize1(self):
         for i in range(self.N):
-            self.pr[i] = self.pr[i]/np.linalg.norm(self.pr[i],2)
+            self.fv[i] = self.fv[i]/np.linalg.norm(self.fv[i],2)
     def normalize2(self):
-        for i in range(len(self.pr[0])):
-            self.pr[:,i] = self.pr[:,i]/np.linalg.norm(self.pr[:,i],2)
+        for i in range(len(self.fv[0])):
+            self.fv[:,i] = self.fv[:,i]/np.linalg.norm(self.fv[:,i],2)
     
     def show(self):
         """
         pagerankを画像として表示
         """
         plt.figure(figsize=[20,20])
-        plt.imshow(self.pr,aspect=7)
+        plt.imshow(self.fv,aspect=7)
         plt.show()
     
 
@@ -56,7 +67,7 @@ class PageRanks():
         D = np.array([[0]*self.N for _ in range(self.N)],dtype="float32")
         for i in range(self.N):
             for j in range(self.N):
-                D[i][j] = np.linalg.norm(self.pr[i]-self.pr[j])
+                D[i][j] = np.linalg.norm(self.fv[i]-self.fv[j])
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
@@ -90,7 +101,7 @@ class PageRanks():
         for i in range(self.N):
             if subj_classes[i] == None:
                 continue
-            classified_pagerank[subj_classes[i]].append(self.pr[i])
+            classified_pagerank[subj_classes[i]].append(self.fv[i])
         
         # オーバーサンプリング(少ないほうの被験者クラスタのページランクをクロスオーバーにより水増しする)
         if sampling == "over":
@@ -126,9 +137,9 @@ class PageRanks():
         return ps<alpha 
 
 if __name__ == "__main__":
-    pagerank = PageRanks()
+    feature_value = FeatureValue(feature_name="dmap",dmap_ind=1)
     for i in range(51):
-        tmp = pagerank.ttest_significant_ind(target=i)
+        tmp = feature_value.ttest_significant_ind(target=i)
         print(sum(tmp))
 
 

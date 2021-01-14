@@ -44,13 +44,13 @@ def feature_value_ttest(dmap_ind):
 
     _,ps = stats.ttest_ind(c_feature_value[0],c_feature_value[1])
 
-    bins = 20
+    bins = 10
     plt.hist(ps,bins=bins)
     plt.plot([0,1],[len(ps)/bins,len(ps)/bins],linestyle="dashed",color="black")
     plt.show()
     print(sum(ps<0.05)/len(ps))
 
 if __name__=="__main__":
-    diffusion_map_embed(0.5,0)
+    #diffusion_map_embed(0.5,0)
     for dmap_ind in range(5):
         feature_value_ttest(dmap_ind)

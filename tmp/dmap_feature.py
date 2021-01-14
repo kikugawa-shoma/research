@@ -5,7 +5,6 @@ import scipy.io
 import copy
 import numpy as np
 import networkx as nx
-import connectivity_ana as ca
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 
@@ -49,9 +48,17 @@ def diffusion_map_embed(alpha,diffusion_time):
         de = dmapmodel.fit_transform(dmap_r.tmp)
         des.append(de)
         print(subj)
-    np.save(r"results\dmap_feature.npy",des)
+    np.save(r"results\dmap_feature\dmap_feature_alpha-{}_DiffusionTime-{}.npy".format(alpha,diffusion_time),des)
         #dmapmodel.fit_transform(copy.deepcopy(pr.r))
 
 if __name__=="__main__":
-    diffusion_map_embed(0.5,0)
+    params1 = [0.1*i for i in range(11)]
+    params2 = [i for i in range(11)]
+    params = []
+    for p1 in params1:
+        for p2 in params2:
+            params.append([p1,p2])
+    for p in params:
+        diffusion_map_embed(p[0],p[1])
+
         

@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score
 from collections import defaultdict
 
 L = np.load(r"results\pagerank_classified_label.npy")
+L[14] = 2
 L_unique = list(set(L))
 
 filepath = r"C:\Users\ktmks\Documents\research\tmp_results\for_python_data\brain_f_data.mat"

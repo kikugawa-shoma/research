@@ -38,7 +38,8 @@ if __name__ == "__main__":
 
         sig_ps_ind = feature_value.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=30)
         sig_img.append(sig_ps_ind)
-        sig_ps_ind = np.load(r"results\e_num5\sig_ps.npy")
+        ps = np.load("results//e_num5//ps.npy")
+        sig_ps_ind = ps<0.03
 
         model = PagerankDecoder(C=1,gamma="scale",class_weight="balanced")
         

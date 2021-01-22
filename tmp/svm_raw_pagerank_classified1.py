@@ -1,4 +1,3 @@
-
 import scipy.io
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
@@ -8,6 +7,7 @@ from collections import defaultdict
 
 L = np.load(r"results\pagerank_classified_label.npy")
 L[14] = 2
+L[20] = 1
 L_unique = list(set(L))
 
 filepath = r"C:\Users\ktmks\Documents\research\tmp_results\for_python_data\brain_f_data.mat"
@@ -53,7 +53,7 @@ for i in range(subject_N):
     print(i," : ",accuracy_test[i])
     label_cnt[Li] += 1
 
-f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\svm_raw_pagerank_classified.txt","w")
+f = open("C:\\Users\\ktmks\\Documents\\research\\tmp\\results\\svm_raw_pagerank_classified1.txt","w")
 for i in range(subject_N):
     print(accuracy_test[i],file=f,end=" ")
 f.close()

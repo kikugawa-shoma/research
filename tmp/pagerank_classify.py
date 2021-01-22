@@ -34,7 +34,7 @@ if __name__ == "__main__":
         label = copy.copy(all_label)
         label[target] = None
 
-        feature_value = PR.PageRanks(weighted=False)
+        feature_value = PR.PageRanks(weighted="p")
 
         sig_ps_ind = feature_value.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=30)
         sig_img.append(sig_ps_ind)

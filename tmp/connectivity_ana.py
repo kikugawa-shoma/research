@@ -61,7 +61,7 @@ for i in range(len(labels)):
 
 subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
 
-pagerank = PR.PageRanks(weighted="p")
+pagerank = PR.PageRanks(weighted="w")
 
 #conversion matrixによるクラスタリングでのグループ間の各roiのpagerankの平均に関するt検定
 c_pagerank = [[] for _ in range(len(set(labels)))]

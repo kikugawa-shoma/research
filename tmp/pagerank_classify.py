@@ -25,6 +25,8 @@ if __name__ == "__main__":
     accuracy = 0
     sig_img = []
     predicted_label = []
+
+    pagerank_kind = "p" # "p" or "w" or "wt"
     for target in range(51):
         # label = cf.ConfusionMatrix().community_detection_without(target)
 
@@ -34,11 +36,11 @@ if __name__ == "__main__":
         label = copy.copy(all_label)
         label[target] = None
 
-        feature_value = PR.PageRanks(weighted="p")
+        feature_value = PR.PageRanks(weighted=pagerank_kind)
 
         sig_ps_ind = feature_value.ttest_significant_ind(target = target,alpha=0.05,sampling=None,sample_diff=30)
         sig_img.append(sig_ps_ind)
-        ps = np.load("results//e_num5//ps.npy")
+        ps = np.load("results//e_num5//ps_"+pagerank_kind+".npy")
         sig_ps_ind = ps<0.05
 
         model = PagerankDecoder(C=1,gamma="scale",class_weight="balanced")
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     print(accuracy)
     plt.matshow(sig_img,aspect=20)
     plt.show()
-    np.save(r"results\pagerank_classified_label.npy",predicted_label)
+    np.save("results\\pagerank_classified_label_" + pagerank_kind + ".npy",predicted_label)
 
 
     """

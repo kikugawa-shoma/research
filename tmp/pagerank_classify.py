@@ -22,8 +22,10 @@ negative = sum([l != 0 for l in all_label])
 
 TPRs = []
 TNRs = []
+sig_ps_ind = np.load("results//dmap_feature//sig_ps_ind.npy")
 for i in range(1,11):
     model = OneClassSVM(nu=i/10)
+    pred = model.fit_predict(feature_value.pr[:,sig_ps_ind])
     pred = model.fit_predict(feature_value.pr)
     pred = [0 if p == 1 else 1 for p in pred]
     print(pred)

@@ -23,16 +23,26 @@ class PageRanks():
     """
     def __init__(self,
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",
+                 feature = "pagerank",
                  weighted=True,
                  ):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
-        if weighted == "p":
-            self.pr = np.load(filepath)["pageranks"]
-        elif weighted == "w" :
-            self.pr = np.load(filepath)["w_pageranks"]
-        elif weighted == "wt" :
-            self.pr = np.load(filepath)["wt_pageranks"]
+        if feature == "pagerank":
+            if weighted == "p":
+                self.pr = np.load(filepath)["pageranks"]
+            elif weighted == "w" :
+                self.pr = np.load(filepath)["w_pageranks"]
+            elif weighted == "wt" :
+                self.pr = np.load(filepath)["wt_pageranks"]
+        elif feature == "dmap":
+            tmp = np.load("results//dmap_feature.npy")
+            self.pr = []
+            for i in range(len(tmp)):
+                self.pr.append(tmp[i][:,2])
+            self.pr = np.array(self.pr)
+
+            
 
     
     def normalize1(self):
@@ -83,6 +93,7 @@ class PageRanks():
 
         with open(r"results\confusion_mat_classified_label.txt") as f:
             subj_classes = list(map(int,f.readline().split()))
+        print(subj_classes)
         subj_classes[target] = None
         subj_classes[14] = None
 

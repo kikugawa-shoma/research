@@ -10,23 +10,21 @@ from matplotlib import pyplot as plt
 
 
 
-pagerank_kind = "wt" # "p" or "w" or "wt"
+pagerank_kind = "p" # "p" or "w" or "wt"
 with open(r"results\confusion_mat_classified_label.txt") as f:
     all_label = list(map(int,f.readline().split()))
 
 feature_value = PR.PageRanks(weighted=pagerank_kind)
-
 
 positive = sum([l == 0 for l in all_label])
 negative = sum([l != 0 for l in all_label])
 
 TPRs = []
 TNRs = []
-sig_ps_ind = np.load("results//dmap_feature//sig_ps_ind.npy")
+sig_ps_ind = np.load("results//e_num5//sig_ps.npy")
 for i in range(1,11):
     model = OneClassSVM(nu=i/10)
     pred = model.fit_predict(feature_value.pr[:,sig_ps_ind])
-    pred = model.fit_predict(feature_value.pr)
     pred = [0 if p == 1 else 1 for p in pred]
     print(pred)
     TPR = 0

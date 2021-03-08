@@ -24,7 +24,7 @@ class PageRanks():
     def __init__(self,
                  filepath=r"C:\Users\ktmks\Documents\research\tmp\results\pageranks.npz",
                  feature = "pagerank",
-                 weighted=True,
+                 weighted="p",
                  ):
         subj_list = scipy.io.loadmat("C:\\Users\\ktmks\\Documents\\my_matlab\\use_subj.mat")["list"][0][:]
         self.N = len(subj_list)
@@ -63,12 +63,15 @@ class PageRanks():
 
     def distances(self):
         """
-        各被験者のpagerankベクトルの距離を計算
+        各被験者の特徴量ベクトルのコサイン距離を計算
         """
         D = np.array([[0]*self.N for _ in range(self.N)],dtype="float32")
         for i in range(self.N):
             for j in range(self.N):
-                D[i][j] = np.linalg.norm(self.pr[i]-self.pr[j])
+                a = np.linalg.norm(self.pr[i])
+                b = np.linalg.norm(self.pr[j])
+                d = np.dot(self.pr[i],self.pr[j])
+                D[i][j] = d/(a*b)
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):

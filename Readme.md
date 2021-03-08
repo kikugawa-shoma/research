@@ -8,8 +8,6 @@ LDA
 analyze
 安静時の脳結合行列のページランクが被験者のコミュニティに対して情報を持つことを確かめた
 
-analyze2
-
 cos_dist
 
 dev/ARD

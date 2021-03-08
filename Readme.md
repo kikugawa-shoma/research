@@ -1,9 +1,9 @@
 # 各ブランチの説明
 2/dev/single_class_svm
-single class svmによる被験者の属するコミュニティの推定を試みたもの
+single class svmによる被験者の属するコミュニティの推定を試みた
 
 LDA
-線形判別分析による転移デコーディングを試みたブランチ
+線形判別分析による転移デコーディングを試みた
 
 analyze
 安静時の脳結合行列のページランクが被験者のコミュニティに対して情報を持つことを確かめた
@@ -29,6 +29,7 @@ dev/pagerank_index_analyze
 dev/parameter_search
 
 dmap
+diffusion mapによる特徴量が被験者のコミュニティに対して情報を持つことを確かめた
 
 e_num5
 

@@ -9,4 +9,4 @@
 *.yml
 *.npy
 *.npz
-tmp/__pycache__
+__pycache__

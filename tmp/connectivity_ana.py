@@ -66,24 +66,12 @@ for i in range(pagerank.N):
 
 ts,ps = stats.ttest_ind(c_pagerank[0],c_pagerank[1])
 
-bins = 20
+bins = 10
 plt.hist(ps,bins=bins)
 plt.plot([0,1],[len(ps)/bins,len(ps)/bins],linestyle="dashed",color="black")
 plt.show()
 
 
-#ランダムシャッフルによるクラスタリングでのグループ間の各roiのpagerankの平均に関するt検定
-rand_c_pagerank = [[] for _ in range(len(set(labels)))]
-random_labels = np.random.randint(0,2,[51])
-for i in range(pagerank.N):
-    L = random_labels[i]
-    rand_c_pagerank[L].append(pagerank.pr[i])
-
-rand_label_ts,rand_label_ps = stats.ttest_ind(rand_c_pagerank[0],rand_c_pagerank[1])
-
-plt.hist(rand_label_ps,bins=10)
-plt.plot([0,1],[len(ps)/10,len(ps)/10],linestyle="dashed",color="black")
-plt.show()
 
 #χ二乗分布による適合度検定
 p = chi_squared_test(ps,bin_n=10)

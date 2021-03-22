@@ -18,7 +18,7 @@ x = data["data"]
 x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-pageranks = PR.PageRanks(feature="dmap")
+pageranks = PR.PageRanks(feature="p")
 
 
 distance = pageranks.distances()
@@ -74,14 +74,17 @@ def knn_decoding(K=49,weighted=False):
     return accuracies
     
 
+#結果の保存
 accs = []
 for i in range(50):
     accuracy = knn_decoding(K=i)
     print(mean(accuracy))
     accs.append(mean(accuracy))
 
-plt.plot([i for i in range(len(accs))],accs)
-plt.show()
+np.save(r"\Users\ktmks\Documents\research\tmp\results\knn\pagerank_without_t-test.npz",accs)
+
+#plt.plot([i for i in range(len(accs))],accs)
+#plt.show()
 
 #a = knn_decoding(49,weighted=True)
 

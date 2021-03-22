@@ -61,6 +61,23 @@ class PageRanks():
         plt.show()
     
 
+    def distances_with_ttest(self,target):
+        """
+        各被験者の特徴量ベクトルのコサイン距離を計算
+        """
+        sig_inds = self.ttest_significant_ind(target)
+        self.ttest_pr = self.pr[:,sig_inds]
+
+        
+        D = np.array([[0]*self.N for _ in range(self.N)],dtype="float32")
+        for i in range(self.N):
+            for j in range(self.N):
+                a = np.linalg.norm(self.ttest_pr[i])
+                b = np.linalg.norm(self.ttest_pr[j])
+                d = np.dot(self.ttest_pr[i],self.ttest_pr[j])
+                D[i][j] = d/(a*b)
+        return D
+
     def distances(self):
         """
         各被験者の特徴量ベクトルのコサイン距離を計算
@@ -143,9 +160,7 @@ class PageRanks():
 
 if __name__ == "__main__":
     pagerank = PageRanks()
-    for i in range(51):
-        tmp = pagerank.ttest_significant_ind(target=i)
-        print(sum(tmp))
+    pagerank.distances_with_ttest(0)
 
 
 

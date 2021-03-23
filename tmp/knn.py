@@ -18,7 +18,7 @@ x = data["data"]
 x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-pageranks = PR.PageRanks(feature="pagerank",weighted="p")
+pageranks = PR.PageRanks(feature="dmap",weighted="p")
 
 
 distance = pageranks.distances()
@@ -81,7 +81,7 @@ for i in range(50):
     print(mean(accuracy))
     accs.append(mean(accuracy))
 
-np.save(r"\Users\ktmks\Documents\research\tmp\results\knn\pagerank_without_t-test.npz",accs)
+np.save(r"\Users\ktmks\Documents\research\tmp\results\knn\dmap_without_t-test",accs)
 
 #plt.plot([i for i in range(len(accs))],accs)
 #plt.show()

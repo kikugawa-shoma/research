@@ -74,7 +74,7 @@ class PageRanks():
             for j in range(self.N):
                 a = np.linalg.norm(self.ttest_pr[i])
                 b = np.linalg.norm(self.ttest_pr[j])
-                d = np.dot(self.pr[i],self.ttest_pr[j])
+                d = np.dot(self.ttest_pr[i],self.ttest_pr[j])
                 D[i][j] = d/(a*b)
         return D
 

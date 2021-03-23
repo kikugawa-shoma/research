@@ -92,7 +92,7 @@ class PageRanks():
         return D
     
     def ttest_significant_ind(self,target,alpha=0.05,sampling=None,sample_diff=5):
-        print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
+        # print("sampling : {}  diff_n : {}".format(sampling,sample_diff))
         """
         被験者をtargetを除いたグラフクラスタリングで分けた2群間の
         各サーチライトでのt検定を行い、p値がalpha以下のサーチライト
@@ -113,7 +113,7 @@ class PageRanks():
 
         with open(r"results\confusion_mat_classified_label.txt") as f:
             subj_classes = list(map(int,f.readline().split()))
-        print(subj_classes)
+        # print(subj_classes)
         subj_classes[target] = None
         subj_classes[14] = None
 

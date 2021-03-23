@@ -1,0 +1,8 @@
+import numpy as np
+
+filename = ""
+data = np.load(filename)
+print(data)
+
+
+

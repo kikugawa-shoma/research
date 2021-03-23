@@ -18,15 +18,18 @@ x = data["data"]
 x = np.array([x[i] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 y = np.array([y[i][0] for i in range(len(y)) if y[i][0] == 3 or y[i][0] == 4])
 
-pageranks = PR.PageRanks(feature="pagerank",weighted="p")
+feature = "dmap"
+pageranks = PR.PageRanks(feature=feature,weighted="p")
 
 
-distance = pageranks.distances()
 
 
 def knn_decoding(K=49,weighted=False):
     accuracies = [0]*subj_N
     for i in range(subj_N):
+        print("K = {},target = {}".format(K,i))
+
+        distance = pageranks.distances_with_ttest(i)
 
         # cos類似度の高い被験者k人を選ぶ
         distance[i][i] = -10
@@ -81,7 +84,7 @@ for i in range(50):
     print(mean(accuracy))
     accs.append(mean(accuracy))
 
-np.save(r"\Users\ktmks\Documents\research\tmp\results\knn\pagerank_without_t-test",accs)
+np.save(r"\Users\ktmks\Documents\research\tmp\results\knn\dmap_with_t-test",accs)
 
 #plt.plot([i for i in range(len(accs))],accs)
 #plt.show()

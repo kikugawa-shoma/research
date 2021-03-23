@@ -1,5 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
+"""
+k-nearest neighbor で被験者をk人選び、それぞれのSVMを訓練し、
+それらのSVMの投票によりターゲットのデコーディングを行った結果を
+グラフにして表示するスクリプト
+"""
 
 def make_plot(filename):
     data = np.load(filename)
